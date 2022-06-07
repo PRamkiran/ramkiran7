@@ -1,0 +1,229 @@
+MEMORY MANAGEMENT
+
+
+
+28.A program to implement First-Fit,Worst-Fit,Best-Fit.
+
+
+
+#include<stdio.h>
+void main()
+{
+ int p[10],np,b[10],temp,nb,ch,c[10],d[10],alloc[10],flag[10],i,j;
+ printf("\nenter the num of processes");
+ scanf("%d",&np);
+ printf("\nenter the num of blocks");
+ scanf("%d",&nb);
+ printf("\nenter size of each process");
+  for(i=0;i<np;i++)
+  {
+    printf("\nprocess %d:",i);
+    scanf("%d",&p[i]);
+  }
+   printf("\nenter the block size");
+   for(j=0;j<nb;j++)
+   {
+    printf("\nblock %d:",j);
+    scanf("%d",&b[j]);
+    c[j]=b[j];
+    d[j]=b[j];
+   }
+   if(np<=nb)
+   {
+     printf("\n1.first fit\n2.best fit\n3.worst fit\n");
+     do
+     {
+       printf("\nenter your choice");
+       scanf("%d",&ch);
+       switch(ch)
+       {
+         case 1:printf("\n first fit\n");
+                  for(j=0;j<nb;j++)
+                  {
+                    if(p[i]<=b[j])
+                    {
+                      alloc[j]=p[i];
+                      printf("\n\nalloc[%d]",alloc[j]);
+                      flag[i]=0;
+                      b[j]=0;
+                      break;
+                    }
+                    else flag[i]=1;
+                  }
+                }
+                for(i=0;i<np;i++)
+                {
+                  if(flag[i]!=0)
+                  printf("\n\nprocess %d of size %d is not allocated",i,p[i]);
+                }
+               break;
+        case 2:printf("\nbest fit\n");
+               for(i=0;i<nb;i++)
+               {
+                 for(j=i+1;j<nb;j++)
+                 {
+                  if(c[i]>c[j])
+                  {
+                   temp=c[i];
+                   c[i]=c[j];
+                   c[j]=temp;
+                  }
+                 }
+               }
+               printf("\nafter sorting block size:");
+               for(i=0;i<nb;i++)
+               {
+                printf("\nblock %d:%d",i,c[i]);
+               }
+                for(j=0;j<nb;j++)
+                {
+                 if(p[i]<=c[j])
+                 {
+                  alloc[j]=p[i];
+                  printf("\n\nalloc[%d]",alloc[j]);
+                  flag[i]=0;
+                  c[j]=0;
+                  break;
+                 }
+                 else flag[i]=1;
+               }
+              }
+              for(i=0;i<np;i++)
+              {
+               if(flag[i]!=0)
+               {
+                printf("\n\nprocess %d of size %d is not allocated",i,p[i]);
+               }
+              }
+              break;
+    case 3: printf("\nworst fit\n");
+            for(i=0;i<nb;i++)
+            {
+             for(j=i+1;j<nb;j++)
+             {
+              if(d[i]<d[j])
+              {
+               temp=d[i];
+               d[i]=d[j];
+               d[j]=temp;
+              }
+             }
+            }
+            printf("\nafter sorting block size");
+            for(i=0;i<nb;i++)
+             printf("\nblock %d:%d",i,d[i]);
+           for(i=0;i<np;i++)
+           {
+            for(j=0;j<nb;j++)
+            {
+             if(p[i]<=d[j])
+             {
+              alloc[j]=p[i];
+              printf("\n\nalloc[%d]",alloc[j]);
+              printf("\n\nprocess %d of size %d is allocated in block %d of size %d",i,p[i],j,d[j]);
+              flag[i]=0;
+              d[j]=0;
+              break;
+             }
+             else
+               flag[i]=1;
+            }
+           }
+           for(i=0;i<np;i++)
+           {
+             if(flag[i]!=0)
+             {
+              printf("\n\nprocess %d of size %d is not allocated",i,p[i]);
+             }
+           }
+          break;
+     default: printf("invalid choice.....!");
+            break;
+    }
+  }while(ch<=3);
+ }
+}
+
+"memorynew.c" 144L, 3899C written
+[dmgv@LinuxServer ~]$ cc memorynew.c
+ [dmgv@LinuxServer ~]$ ./a.out
+
+enter the num of processes 3
+
+enter the num of blocks 3
+
+enter size of each process
+process 0:100
+
+process 1:150
+
+process 2:200
+
+enter the block size
+block 0:300
+
+block 1:350
+
+block 2:200
+
+1.first fit
+2.best fit
+3.worst fit
+
+enter your choice1
+
+ first fit
+
+
+alloc[100]
+
+process 0 of size 100 is allocated in block:0 of size:300
+
+alloc[150]
+process 1 of size 150 is allocated in block:1 of size:350
+
+alloc[200]
+
+process 2 of size 200 is allocated in block:2 of size:200
+enter your choice2
+
+best fit
+
+after sorting block size:
+block 0:200
+block 1:300
+block 2:350
+
+alloc[100]
+
+process 0 of size 100 is allocated in block 0 of size 200
+
+alloc[150]
+
+process 1 of size 150 is allocated in block 1 of size 300
+
+alloc[200]
+
+process 2 of size 200 is allocated in block 2 of size 350
+enter your choice3
+
+worst fit
+
+after sorting block size
+block 0:350
+block 1:300
+block 2:200
+
+alloc[100]
+
+process 0 of size 100 is allocated in block 0 of size 350
+
+alloc[150]
+
+process 1 of size 150 is allocated in block 1 of size 300
+
+alloc[200]
+
+process 2 of size 200 is allocated in block 2 of size 200
+enter your choice5
+invalid choice.....!
